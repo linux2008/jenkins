@@ -13,7 +13,6 @@ URL_PKG='http://192.168.133.129/deploy/packages/'
 DOWNLOAD_DIR='/var/www/download/'
 DEPLOY_DIR='/var/www/deploy/'
 APP_NAME='wordpress'
-DOC_ROOT='/var/www/html/current'
 
 
 def init():
@@ -69,20 +68,8 @@ def pkg_deploy(fn,d):
     tar=tarfile.open(fn)
     tar.extractall(path=d)
 
-def checkliver():
-    livever=getURL(URL_LIVEVER)
-    pkg_path=os.path.join(DEPLOY_DIR,"%s-%s" %(APP_NAME,livever))
-    if os.path.exists(pkg_path):
-        if os.path.exists(DOC_ROOT):
-            target=os.readlink(DOC_ROOT)
-            if target != pkg_path:
-                os.unlink(DOC_ROOT)
-                os.symlink(pkg_path,DOC_ROOT)
-        else:
-            os.symlink(pkg_path,DOC_ROOT)
 
 if __name__=='__main__':
     init()
     checkversion()
-    checkliver()
 
